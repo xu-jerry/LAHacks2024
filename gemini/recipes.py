@@ -10,8 +10,9 @@ def generate_recipe(ingredients, number, filter):
 
     Structure the recipe in the given schema:
 
-    It must be an object with the keys name, ingredients, and instructions. 
+    It must be an object with the keys name, time, ingredients, and instructions. 
     name is a string value. 
+    time is an float value of the max number of hours it takes to complete the recipe
     ingredients is an array of objects with keys ingredient, quantity, unit. ingredients must have simplified ingredient names, specific measurements in quantity and units.
     instructions are an array of strings with the step number preceding the instruction.
 
