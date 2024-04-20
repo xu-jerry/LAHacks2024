@@ -3,17 +3,22 @@ import reflex as rx
 from repeat.template import template
 from gemini.recipes import generate_recipe, recipe_ingredients
 
+filters = ['high protein', 'low fat', 'no peanuts']
+
 class FormState(rx.State):
     form_data: dict = {}
     lines = []
-    recipe = ""
+    loading = False
 
     def handle_submit(self, form_data: dict):
         """Handle the form submit."""
+        
         self.form_data = form_data
+        self.loading= True
+        yield
         recipe = generate_recipe(self.form_data["ingredients"])
-        self.recipe = recipe
         self.lines = recipe.split('\n')
+        self.loading= False
 
     def recipe_info(self):
         """Test recipe_ingredients"""
@@ -27,8 +32,16 @@ def recipes() -> rx.Component:
                 margin_top="calc(50px + 2em)",
                 padding="2em",
             ),
-            rx.foreach(FormState.lines, lambda line: rx.box(
-                rx.text(line))),
+            rx.text("Using the following filters:"),
+            rx.foreach(filters, lambda filter: rx.box(
+                        rx.text(filter))),
+            rx.cond(
+                    FormState.loading,
+                    rx.chakra.circular_progress(is_indeterminate=True),
+                    rx.foreach(FormState.lines, lambda line: rx.box(
+                        rx.text(line)))
+                    ),
+            rx.divider(),
             rx.form(
                 rx.vstack(
                     rx.input(
@@ -42,4 +55,5 @@ def recipes() -> rx.Component:
             ),
             rx.button("Ingredients", on_click=FormState.recipe_info),
             padding_left="250px",
+            padding_right="250px",
         )
