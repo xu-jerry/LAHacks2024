@@ -1,6 +1,5 @@
 import reflex as rx
 
-from LAHacks2024.navigation import navbar
 from LAHacks2024.template import template
 
 import google.generativeai as genai
@@ -21,7 +20,6 @@ def recipes() -> rx.Component:
     print(lines)
 
     return rx.box(
-            navbar(heading="Recipes"),
             rx.box(
                 rx.text("Recipes with Onions, Carrots, and Chicken"),
                 margin_top="calc(50px + 2em)",

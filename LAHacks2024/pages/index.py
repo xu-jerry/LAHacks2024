@@ -17,11 +17,9 @@ from LAHacks2024.graphs import (
     stat_card,
     table,
 )
-from LAHacks2024.navigation import navbar
 from LAHacks2024.template import template
 
 # Content in a grid layout.
-
 
 def content_grid():
     return rx.chakra.grid(
@@ -55,7 +53,6 @@ def content_grid():
 @template
 def index() -> rx.Component:
     return rx.box(
-            navbar(heading="Dashboard"),
             rx.box(
                 content_grid(),
                 margin_top="calc(50px + 2em)",
