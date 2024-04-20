@@ -27,27 +27,9 @@ class FormState(rx.State):
         prompt = f"List out some full recipes with {ingredients} as ingredients."
         response = model.generate_content(prompt)
         self.lines = response.text.split('\n')
-        print(self.lines)
 
 @template
 def recipes() -> rx.Component:
-    # class FormState(rx.State):
-    #     form_data: dict = {}
-    #     lines = []
-
-    #     def handle_submit(self, form_data: dict):
-    #         """Handle the form submit."""
-    #         self.form_data = form_data
-        #     self.regenerate()
-        
-        # def regenerate(self):
-        #     ingredients = self.form_data["ingredients"]
-        #     prompt = f"List out some full recipes with {ingredients} as ingredients."
-        #     response = model.generate_content(prompt)
-        #     self.lines = response.text.split('\n')
-    
-
-
     return rx.box(
             navbar(heading="Recipes"),
             rx.box(
@@ -57,9 +39,6 @@ def recipes() -> rx.Component:
             ),
             rx.foreach(FormState.lines, lambda line: rx.box(
                 rx.text(line))),
-            # *map(lambda line: rx.box(
-            #     rx.text(line),
-            # ), FormState.lines),
             rx.form(
                 rx.vstack(
                     rx.input(
