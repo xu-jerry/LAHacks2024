@@ -3,7 +3,7 @@
 from reflex.components.radix import themes as rx
 
 THEME = rx.theme(
-    appearance="light",
+    appearance="dark",
     has_background=True,
     radius="large",
     accent_color="iris",
@@ -11,7 +11,11 @@ THEME = rx.theme(
     panel_background="solid",
 )
 
-STYLESHEETS = ["https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"]
+STYLESHEETS = [
+    "./styles.css",
+    "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap",
+]
 
-FONT_FAMILY = "Share Tech Mono"
-BACKGROUND_COLOR = "var(--accent-2)"
+FONT_FAMILY = "Inter"
+BACKGROUND_COLOR = "rgba(1, 5, 15)"
+# BACKGROUND_COLOR = "var(--accent-2)"
