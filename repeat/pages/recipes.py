@@ -1,33 +1,25 @@
 import reflex as rx
 
 from repeat.template import template
-
-import google.generativeai as genai
-
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-model = genai.GenerativeModel("gemini-pro")
-
+from gemini.recipes import generate_recipe, recipe_ingredients
 
 class FormState(rx.State):
     form_data: dict = {}
     lines = []
+    recipe = ""
+    lines1 = []
 
     def handle_submit(self, form_data: dict):
         """Handle the form submit."""
         self.form_data = form_data
-        self.regenerate()
+        recipe = generate_recipe(self.form_data["ingredients"])
+        self.recipe = recipe
+        self.lines = recipe.split('\n')
 
-    def regenerate(self):
-        ingredients = self.form_data["ingredients"]
-        prompt = f"List out some full recipes with {ingredients} as ingredients."
-        response = model.generate_content(prompt)
-        self.lines = response.text.split("\n")
-
+    def recipe_info(self):
+        """Test recipe_ingredients"""
+        ingredients = recipe_ingredients(self.recipe)
+        self.lines1 = ingredients.split('\n')
 
 @template
 def recipes() -> rx.Component:
@@ -50,6 +42,9 @@ def recipes() -> rx.Component:
                 on_submit=FormState.handle_submit,
                 reset_on_submit=True,
             ),
+            rx.foreach(FormState.lines1, lambda line: rx.box(
+                rx.text(line))),
+            rx.button("Ingredients", on_click=FormState.recipe_info),
             padding_left="250px",
             background_image="url(../chat_gradient.png)",
             background_size="cover",
