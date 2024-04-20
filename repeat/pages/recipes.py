@@ -7,7 +7,6 @@ class FormState(rx.State):
     form_data: dict = {}
     lines = []
     recipe = ""
-    lines1 = []
 
     def handle_submit(self, form_data: dict):
         """Handle the form submit."""
@@ -18,8 +17,7 @@ class FormState(rx.State):
 
     def recipe_info(self):
         """Test recipe_ingredients"""
-        ingredients = recipe_ingredients(self.recipe)
-        self.lines1 = ingredients.split('\n')
+        recipe_ingredients()
 
 @template
 def recipes() -> rx.Component:
@@ -42,8 +40,6 @@ def recipes() -> rx.Component:
                 on_submit=FormState.handle_submit,
                 reset_on_submit=True,
             ),
-            rx.foreach(FormState.lines1, lambda line: rx.box(
-                rx.text(line))),
             rx.button("Ingredients", on_click=FormState.recipe_info),
             padding_left="250px",
         )
