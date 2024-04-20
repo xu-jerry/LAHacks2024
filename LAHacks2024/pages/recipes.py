@@ -13,23 +13,63 @@ load_dotenv()
 genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
 model = genai.GenerativeModel('gemini-pro')
 
+class FormState(rx.State):
+    form_data: dict = {}
+    lines = []
+
+    def handle_submit(self, form_data: dict):
+        """Handle the form submit."""
+        self.form_data = form_data
+        self.regenerate()
+    
+    def regenerate(self):
+        ingredients = self.form_data["ingredients"]
+        prompt = f"List out some full recipes with {ingredients} as ingredients."
+        response = model.generate_content(prompt)
+        self.lines = response.text.split('\n')
+        print(self.lines)
+
 @template
 def recipes() -> rx.Component:
-    response = model.generate_content("List out some full recipes with onion, carrots, and chicken as ingredients.")
-    print(response.text)
-    lines = response.text.split('\n')
-    print(lines)
+    # class FormState(rx.State):
+    #     form_data: dict = {}
+    #     lines = []
+
+    #     def handle_submit(self, form_data: dict):
+    #         """Handle the form submit."""
+    #         self.form_data = form_data
+        #     self.regenerate()
+        
+        # def regenerate(self):
+        #     ingredients = self.form_data["ingredients"]
+        #     prompt = f"List out some full recipes with {ingredients} as ingredients."
+        #     response = model.generate_content(prompt)
+        #     self.lines = response.text.split('\n')
+    
+
 
     return rx.box(
             navbar(heading="Recipes"),
             rx.box(
-                rx.text("Recipes with Onions, Carrots, and Chicken"),
+                rx.text("Recipes"),
                 margin_top="calc(50px + 2em)",
                 padding="2em",
             ),
-            *map(lambda line: rx.box(
-                rx.text(line),
-            ), lines),
-
+            rx.foreach(FormState.lines, lambda line: rx.box(
+                rx.text(line))),
+            # *map(lambda line: rx.box(
+            #     rx.text(line),
+            # ), FormState.lines),
+            rx.form(
+                rx.vstack(
+                    rx.input(
+                        placeholder="Ingredients",
+                        name="ingredients",
+                    ),
+                    rx.button("Submit", type="submit"),
+                ),
+                on_submit=FormState.handle_submit,
+                reset_on_submit=True,
+            ),
             padding_left="250px",
         )
