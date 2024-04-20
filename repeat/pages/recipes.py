@@ -1,32 +1,51 @@
 import reflex as rx
 
 from repeat.template import template
+from gemini.recipes import generate_recipe, substitute_recipe
+from gemini.nutrients import nutritional_value
 
-import google.generativeai as genai
-
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-model = genai.GenerativeModel("gemini-pro")
-
+filters = ['high protein', 'low fat', 'no peanuts']
+missing = ['potatoes']
+available = ['carrots']
 
 class FormState(rx.State):
     form_data: dict = {}
     lines = []
+    recipe = ""
+    ingredients = ""
+    loading = False
 
     def handle_submit(self, form_data: dict):
         """Handle the form submit."""
+        
         self.form_data = form_data
-        self.regenerate()
+        self.loading= True
+        filter_string = ", ".join(filters)
+        yield
+        recipe = generate_recipe(1, self.form_data["ingredients"], filter_string)
+        self.recipe = recipe
+        self.loading= False
 
-    def regenerate(self):
-        ingredients = self.form_data["ingredients"]
-        prompt = f"List out some full recipes with {ingredients} as ingredients."
-        response = model.generate_content(prompt)
-        self.lines = response.text.split("\n")
+    def recipe_info(self):
+        """Test recipe_ingredients"""
+        self.loading= True
+        yield
+        self.ingredients = self.recipe["ingredients"]
+        self.loading= False
+
+
+    def sub_rec(self):
+        self.loading= True
+        yield
+        substitute_recipe(self.recipe, missing, available)
+        self.loading= False
+
+    def nut_rec(self):
+        self.loading= True
+        yield
+        nutritional_value(self.ingredients)
+        self.loading= False
+
 
 
 @template
@@ -38,7 +57,16 @@ def recipes() -> rx.Component:
                 margin_top="calc(50px + 2em)",
                 padding="2em",
             ),
-            rx.foreach(FormState.lines, lambda line: rx.box(rx.text(line))),
+            rx.text("Using the following filters:"),
+            rx.foreach(filters, lambda filter: rx.box(
+                        rx.text(filter))),
+            rx.cond(
+                    FormState.loading,
+                    rx.chakra.circular_progress(is_indeterminate=True),
+                    rx.foreach(FormState.lines, lambda line: rx.box(
+                        rx.text(line)))
+                    ),
+            rx.divider(),
             rx.form(
                 rx.vstack(
                     rx.input(
@@ -50,6 +78,9 @@ def recipes() -> rx.Component:
                 on_submit=FormState.handle_submit,
                 reset_on_submit=True,
             ),
+            rx.button("Ingredients", on_click=FormState.recipe_info),
+            rx.button("Substitute", on_click=FormState.sub_rec),
+            rx.button("Nutrition", on_click=FormState.nut_rec),
             padding_left="250px",
             background_image="url(../chat_gradient.png)",
             background_size="cover",
