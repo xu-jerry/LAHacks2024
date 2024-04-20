@@ -1,7 +1,7 @@
 import reflex as rx
 
 from repeat.template import template
-from gemini.recipes import generate_recipe, recipe_ingredients
+from gemini.recipes import generate_recipe, recipe_ingredients, substitute_recipe
 
 filters = ['high protein', 'low fat', 'no peanuts']
 
@@ -15,14 +15,19 @@ class FormState(rx.State):
         
         self.form_data = form_data
         self.loading= True
+        filter_string = ", ".join(filters)
         yield
-        recipe = generate_recipe(self.form_data["ingredients"])
+        recipe = generate_recipe(self.form_data["ingredients"], filter_string)
         self.lines = recipe.split('\n')
         self.loading= False
 
     def recipe_info(self):
         """Test recipe_ingredients"""
         recipe_ingredients()
+
+    def sub_rec(self):
+        substitute_recipe()
+
 
 @template
 def recipes() -> rx.Component:
@@ -54,6 +59,7 @@ def recipes() -> rx.Component:
                 reset_on_submit=True,
             ),
             rx.button("Ingredients", on_click=FormState.recipe_info),
+            rx.button("Substitute", on_click=FormState.sub_rec),
             padding_left="250px",
             padding_right="250px",
         )
