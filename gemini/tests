@@ -1,0 +1,102 @@
+RECIPE:
+[
+  {
+    "name": "Lemon Herb Chicken with Roasted Potatoes",
+    "ingredients": [
+      {
+        "ingredient": "Chicken breasts",
+        "quantity": 2,
+        "unit": ""
+      },
+      {
+        "ingredient": "Potatoes",
+        "quantity": 1.5,
+        "unit": "pounds"
+      },
+      {
+        "ingredient": "Lemon",
+        "quantity": 1,
+        "unit": ""
+      },
+      {
+        "ingredient": "Fresh rosemary",
+        "quantity": 2,
+        "unit": "sprigs"
+      },
+      {
+        "ingredient": "Fresh thyme",
+        "quantity": 2,
+        "unit": "sprigs"
+      },
+      {
+        "ingredient": "Olive oil",
+        "quantity": 2,
+        "unit": "tablespoons"
+      },
+      {
+        "ingredient": "Salt",
+        "quantity": 1,
+        "unit": "teaspoon"
+      },
+      {
+        "ingredient": "Black pepper",
+        "quantity": 0.5,
+        "unit": "teaspoon"
+      }
+    ],
+    "instructions": [
+      "Preheat oven to 400 degrees F (200 degrees C).",
+      "Cut potatoes into 1-inch cubes and toss with 1 tablespoon olive oil, salt, and pepper.",
+      "Spread potatoes on a baking sheet and roast for 20 minutes.",
+      "While potatoes roast, zest and juice the lemon.",
+      "Combine lemon zest and juice with remaining olive oil, rosemary, thyme, salt, and pepper in a bowl.",
+      "Add chicken breasts to the bowl and coat with the marinade.",
+      "Push potatoes to the side of the baking sheet and add chicken breasts.",
+      "Roast for an additional 20-25 minutes, or until chicken is cooked through and potatoes are golden brown."
+    ]
+  }
+]
+
+INGREDIENTS:
+[
+  {
+    "ingredient": "Chicken breasts",
+    "quantity": 2,
+    "unit": ""
+  },
+  {
+    "ingredient": "Potatoes",
+    "quantity": 1.5,
+    "unit": "pounds"
+  },
+  {
+    "ingredient": "Lemon",
+    "quantity": 1,
+    "unit": ""
+  },
+  {
+    "ingredient": "Fresh rosemary",
+    "quantity": 2,
+    "unit": "sprigs"
+  },
+  {
+    "ingredient": "Fresh thyme",
+    "quantity": 2,
+    "unit": "sprigs"
+  },
+  {
+    "ingredient": "Olive oil",
+    "quantity": 2,
+    "unit": "tablespoons"
+  },
+  {
+    "ingredient": "Salt",
+    "quantity": 1,
+    "unit": "teaspoon"
+  },
+  {
+    "ingredient": "Black pepper",
+    "quantity": 0.5,
+    "unit": "teaspoon"
+  }
+]
