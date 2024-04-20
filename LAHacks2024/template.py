@@ -13,5 +13,5 @@ def template(page: Callable[[], rx.Component]) -> rx.Component:
         rx.logo(),
         background_color=BACKGROUND_COLOR,
         font_family=FONT_FAMILY,
-        padding_bottom="4em",
+        padding_bottom="2em",
     )

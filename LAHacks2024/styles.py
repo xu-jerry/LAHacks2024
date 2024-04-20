@@ -14,4 +14,4 @@ THEME = rx.theme(
 STYLESHEETS = ["./styles.css", "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"]
 
 FONT_FAMILY = "Inter"
-BACKGROUND_COLOR = "var(--accent-2)"
+BACKGROUND_COLOR = "rgba(1, 5, 15)"

@@ -49,17 +49,19 @@ def sidebar(
             spacing="5", # between logo and title
             margin="2em", # entire navbar
         ),
-        rx.divider(margin_x="20"), # space between logo/title and navbar links
+        rx.divider(margin_x="15"), # space between logo/title and navbar links
         rx.hstack( # navbar links
             *sidebar_links,
             padding_x="5em",
         ),
         position="fixed",
-        height="100%",
+        height="90px",
+        width="100%",
         left="0px",
         top="0px",
         align_items="left",
         z_index="10",
+        background_color="rgba(1, 5, 15)",
         # backdrop_filter="blur(10px)",
         # padding="2em", # entire navbar
     )

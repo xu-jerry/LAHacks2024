@@ -56,7 +56,7 @@ def index() -> rx.Component:
             rx.box(
                 content_grid(),
                 margin_top="calc(50px + 2em)",
-                padding="2em",
+                padding="3em",
             ),
-            padding_left="250px",
+            padding_x="4em",
         )
