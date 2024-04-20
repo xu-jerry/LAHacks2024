@@ -22,6 +22,11 @@ def recipes() -> rx.Component:
 
     return rx.box(
             navbar(heading="Recipes"),
+            rx.box(
+                rx.text("Recipes with Onions, Carrots, and Chicken"),
+                margin_top="calc(50px + 2em)",
+                padding="2em",
+            ),
             *map(lambda line: rx.box(
                 rx.text(line),
             ), lines),
