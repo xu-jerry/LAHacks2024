@@ -1,14 +1,19 @@
 import reflex as rx
 
 from repeat.template import template
-from gemini.recipes import generate_recipe, recipe_ingredients, substitute_recipe
+from gemini.recipes import generate_recipe, substitute_recipe
+from gemini.nutrients import nutritional_value
 
 filters = ['high protein', 'low fat', 'no peanuts']
+missing = ['potatoes']
+available = ['carrots']
 
 class FormState(rx.State):
     form_data: dict = {}
     lines = []
     recipe = ""
+    ingredients = ""
+    loading = False
 
     def handle_submit(self, form_data: dict):
         """Handle the form submit."""
@@ -17,15 +22,30 @@ class FormState(rx.State):
         self.loading= True
         filter_string = ", ".join(filters)
         yield
-        recipe = generate_recipe(self.form_data["ingredients"], filter_string)
-        self.lines = recipe.split('\n')
+        recipe = generate_recipe(1, self.form_data["ingredients"], filter_string)
+        self.recipe = recipe
+        self.loading= False
 
     def recipe_info(self):
         """Test recipe_ingredients"""
-        recipe_ingredients()
+        self.loading= True
+        yield
+        self.ingredients = self.recipe["ingredients"]
+        self.loading= False
+
 
     def sub_rec(self):
-        substitute_recipe()
+        self.loading= True
+        yield
+        substitute_recipe(self.recipe, missing, available)
+        self.loading= False
+
+    def nut_rec(self):
+        self.loading= True
+        yield
+        nutritional_value(self.ingredients)
+        self.loading= False
+
 
 
 @template
@@ -51,6 +71,7 @@ def recipes() -> rx.Component:
             ),
             rx.button("Ingredients", on_click=FormState.recipe_info),
             rx.button("Substitute", on_click=FormState.sub_rec),
+            rx.button("Nutrition", on_click=FormState.nut_rec),
             padding_left="250px",
             background_image="url(../chat_gradient.png)",
             background_size="cover",

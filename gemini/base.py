@@ -7,4 +7,4 @@ load_dotenv()
 
 genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
 # Export model to generate responses
-model = genai.GenerativeModel('gemini-pro')
+model = genai.GenerativeModel('gemini-1.5-pro-latest', generation_config={"response_mime_type": "application/json"})
