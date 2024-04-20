@@ -3,6 +3,8 @@ import reflex as rx
 from repeat.template import template
 from gemini.recipes import generate_recipe, recipe_ingredients
 
+filters = ['high protein', 'low fat', 'no peanuts']
+
 class FormState(rx.State):
     form_data: dict = {}
     lines = []
@@ -10,6 +12,7 @@ class FormState(rx.State):
 
     def handle_submit(self, form_data: dict):
         """Handle the form submit."""
+        
         self.form_data = form_data
         recipe = generate_recipe(self.form_data["ingredients"])
         self.recipe = recipe
