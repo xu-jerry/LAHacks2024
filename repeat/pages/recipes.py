@@ -2,7 +2,7 @@ import reflex as rx
 
 from repeat.template import template
 from gemini.recipes import generate_recipe, substitute_recipe
-from gemini.nutrients import nutritional_value
+from gemini.nutrients import nutritional_value, grocery_list_nutrition
 
 filters = ['high protein', 'low fat', 'no peanuts']
 missing = ['potatoes']
@@ -46,6 +46,54 @@ class FormState(rx.State):
         nutritional_value(self.ingredients)
         self.loading= False
 
+    def groc_list(self):
+        ingredients = """
+          {
+    "ingredient": "Chicken breasts",
+    "quantity": 2,
+    "unit": ""
+  },
+  {
+    "ingredient": "Potatoes",
+    "quantity": 1.5,
+    "unit": "pounds"
+  },
+  {
+    "ingredient": "Lemon",
+    "quantity": 1,
+    "unit": ""
+  },
+  {
+    "ingredient": "Fresh rosemary",
+    "quantity": 2,
+    "unit": "sprigs"
+  },
+  {
+    "ingredient": "Fresh thyme",
+    "quantity": 2,
+    "unit": "sprigs"
+  },
+  {
+    "ingredient": "Olive oil",
+    "quantity": 2,
+    "unit": "tablespoons"
+  },
+  {
+    "ingredient": "Salt",
+    "quantity": 1,
+    "unit": "teaspoon"
+  },
+  {
+    "ingredient": "Black pepper",
+    "quantity": 0.5,
+    "unit": "teaspoon"
+  }
+        """
+        self.loading= True
+        yield
+        grocery_list_nutrition(ingredients)
+        self.loading= False
+
 
 
 @template
@@ -72,6 +120,7 @@ def recipes() -> rx.Component:
             rx.button("Ingredients", on_click=FormState.recipe_info),
             rx.button("Substitute", on_click=FormState.sub_rec),
             rx.button("Nutrition", on_click=FormState.nut_rec),
+            rx.button("Grocery List", on_click=FormState.groc_list),
             padding_left="250px",
             background_image="url(../chat_gradient.png)",
             background_size="cover",
