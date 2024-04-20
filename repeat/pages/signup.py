@@ -1,11 +1,11 @@
-"""Login page. Uses auth_layout to render UI shared with the sign up page."""
+"""Sign up page. Uses auth_layout to render UI shared with the login page."""
 
 import reflex as rx
-from LAHacks2024.state.auth import AuthState
+from repeat.state.auth import AuthState
 
 
-def login():
-    """The login page."""
+def signup():
+    """The sign up page."""
     return rx.box(
         rx.box(
             rx.vstack(
@@ -20,7 +20,18 @@ def login():
                     on_blur=AuthState.set_password,
                     size="3",
                 ),
-                rx.button("Log in", on_click=AuthState.login, size="3", width="5em"),
+                rx.input(
+                    type="password",
+                    placeholder="Confirm password",
+                    on_blur=AuthState.set_confirm_password,
+                    size="3",
+                ),
+                rx.button(
+                    "Sign up",
+                    on_click=AuthState.signup,
+                    size="3",
+                    width="6em",
+                ),
                 spacing="4",
             ),
             align_items="left",
@@ -31,8 +42,8 @@ def login():
             border_radius="8px",
         ),
         rx.text(
-            "Don't have an account yet? ",
-            rx.link("Sign up here.", href="/signup"),
+            "Already have an account? ",
+            rx.link("Sign in here.", href="/"),
             color="gray",
         ),
     )

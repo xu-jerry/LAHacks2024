@@ -1,7 +1,7 @@
 """Mock data to populate the dashboard charts and tables."""
 
 import reflex as rx
-from LAHacks2024.graphs import Area, Line
+from repeat.graphs import Area, Line
 
 stat_card_data = [
     [

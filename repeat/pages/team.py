@@ -1,6 +1,6 @@
 import reflex as rx
 
-from LAHacks2024.template import template
+from repeat.template import template
 
 @template
 def team() -> rx.Component:

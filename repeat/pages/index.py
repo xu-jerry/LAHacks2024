@@ -1,7 +1,7 @@
 """The main index page."""
 
 import reflex as rx
-from LAHacks2024.data import (
+from repeat.data import (
     line_chart_data,
     lines,
     pie_chart_data,
@@ -10,14 +10,14 @@ from LAHacks2024.data import (
     stat_card_data,
     tabular_data,
 )
-from LAHacks2024.graphs import (
+from repeat.graphs import (
     area_chart,
     line_chart,
     pie_chart,
     stat_card,
     table,
 )
-from LAHacks2024.template import template
+from repeat.template import template
 
 # Content in a grid layout.
 

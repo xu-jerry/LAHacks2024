@@ -4,14 +4,14 @@ from rxconfig import config
 
 import reflex as rx
 
-from LAHacks2024.styles import BACKGROUND_COLOR, FONT_FAMILY, THEME, STYLESHEETS
+from repeat.styles import BACKGROUND_COLOR, FONT_FAMILY, THEME, STYLESHEETS
 
 from .state.base import State
-from LAHacks2024.pages.login import login
-from LAHacks2024.pages.signup import signup
-from LAHacks2024.pages.recipes import recipes
-from LAHacks2024.pages.team import team
-from LAHacks2024.pages.index import index
+from repeat.pages.login import login
+from repeat.pages.signup import signup
+from repeat.pages.recipes import recipes
+from repeat.pages.team import team
+from repeat.pages.index import index
 
 # Create app instance and add index page.
 app = rx.App(

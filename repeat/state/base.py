@@ -2,7 +2,7 @@
 from typing import Optional
 
 import reflex as rx
-from LAHacks2024.db_model import User
+from repeat.db_model import User
 
 class State(rx.State):
     """The base state for the app."""

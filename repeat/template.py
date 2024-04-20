@@ -2,7 +2,7 @@ from typing import Callable
 
 import reflex as rx
 
-from LAHacks2024.styles import BACKGROUND_COLOR, FONT_FAMILY
+from repeat.styles import BACKGROUND_COLOR, FONT_FAMILY
 
 
 def template(page: Callable[[], rx.Component]) -> rx.Component:

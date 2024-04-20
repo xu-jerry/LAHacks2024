@@ -1,5 +1,5 @@
 import reflex as rx
 
 config = rx.Config(
-    app_name="LAHacks2024",
+    app_name="repeat",
 )
