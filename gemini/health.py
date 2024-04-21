@@ -40,6 +40,7 @@ def evaluate_health(user_info, health_record):
     print(response.text)
     return evaluation[0]
 
+# Create a unique plan that addresses health concerns
 def create_plan():
     health_evaluation = """
     [
@@ -79,3 +80,20 @@ def create_plan():
     plan = json.loads(response.text)
     print(response.text)
     return plan[0]
+
+# Give advice based on a health question
+def health_advice():
+    question = """
+    what ingredients should I add to my diet to Reduce protein intake, especially red meat, and increase water intake
+    """
+    prompt = f"""
+    Please return an array of 3 recommendations to address a health concern/question. 
+    It must be constructive and feasible to improve one's lifestyle slowly.
+
+    Here is the question:
+    {question}
+    """
+    response = model.generate_content(prompt)
+    advice = json.loads(response.text)
+    print(response.text)
+    return advice[0]

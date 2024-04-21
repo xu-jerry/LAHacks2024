@@ -38,3 +38,18 @@ def grocery_list_nutrition(items):
     print(response.text)
     return grocery_list[0]
 
+# Determine if a certain nutrient is beneficial or detrimental to an individual's health
+def nutrient_evaluation(nutrient):
+    prompt = f"""
+    Return a string that evaluate if this nutrient is beneficial or detrimental to a human's health.
+    Please also include reasoning to support this conclusion.
+
+    Here is the nutrient:
+
+    {nutrient}
+    """
+    response = model.generate_content(prompt)
+    evaluation = json.loads(response.text)
+    print(response.text)
+    return evaluation[0]
+
