@@ -100,3 +100,54 @@ INGREDIENTS:
     "unit": "teaspoon"
   }
 ]
+
+user_info = """
+{"age": 22, "gender": "male", "weight": "188lbs"}
+"""
+health_record = """
+{"HDL Cholesterol": "58 mg/dL", "LDL Cholesterol": "83 mg/DL", "Triglycerides": "48 mg/dL", "Glucose, Serum": "99 mg/dL", "BUN": "20 mg/dL", "Creatine, Serum": "1.44 mg/dL", "eGFR": "51 mL/min/1.73", "Sodium": "142 mmol/L", "Potassium": "4.2 mmol/L", "Chloride": "104 mmol/L", "Carbon dioxide": "29 mmol/L", "Calcium": "9.5 mg/dL", "Protein, Total": "6.6 g/dL", "Albumin": "4.3 g/dL", "Globulin": "2.3 g/dL", "Bilirubin": "0.5 mg/dL", "Alkaline": "66 IU/L", "AST": "14 IU/L", "ALT": "18 IU/L", "Lipoprotein (a)": "174 mg/dL"}
+"""
+
+[
+  {"HDL Cholesterol": {"score": 58, "status": "just right"}},
+  {"LDL Cholesterol": {"score": 83, "status": "just right"}}, 
+  {"Triglycerides": {"score": 48, "status": "just right"}},
+  {"Glucose, Serum": {"score": 99, "status": "just right"}},
+  {"BUN": {"score": 20, "status": "just right"}},
+  {"Creatine, Serum": {"score": 1.44, "status": "too high"}},
+  {"eGFR": {"score": 51, "status": "too low"}},
+  {"Sodium": {"score": 142, "status": "just right"}},
+  {"Potassium": {"score": 4.2, "status": "just right"}},
+  {"Chloride": {"score": 104, "status": "just right"}},
+  {"Carbon dioxide": {"score": 29, "status": "just right"}}, 
+  {"Calcium": {"score": 9.5, "status": "just right"}},
+  {"Protein, Total": {"score": 6.6, "status": "just right"}},
+  {"Albumin": {"score": 4.3, "status": "just right"}},
+  {"Globulin": {"score": 2.3, "status": "just right"}},
+  {"Bilirubin": {"score": 0.5, "status": "just right"}},
+  {"Alkaline": {"score": 66, "status": "just right"}},
+  {"AST": {"score": 14, "status": "just right"}},
+  {"ALT": {"score": 18, "status": "just right"}},
+  {"Lipoprotein (a)": {"score": 174, "status": "too high"}}
+]
+
+[
+  {
+    "name": "Creatine, Serum",
+    "score": 1.44,
+    "status": "too high",
+    "action": "Reduce protein intake, especially red meat, and increase water intake."
+  },
+  {
+    "name": "eGFR",
+    "score": 51,
+    "status": "too low",
+    "action": "Consult a doctor or a registered dietitian to assess kidney function and discuss dietary changes to support kidney health, such as reducing sodium and phosphorus intake."
+  },
+  {
+    "name": "Lipoprotein (a)",
+    "score": 174,
+    "status": "too high",
+    "action": "Consult a doctor or a registered dietitian to discuss strategies to lower Lp(a) levels, such as increasing omega-3 fatty acid intake, engaging in regular exercise, and potentially considering medication options."
+  }
+]
