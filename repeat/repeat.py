@@ -9,7 +9,7 @@ from repeat.styles import BACKGROUND_COLOR, FONT_FAMILY, THEME, STYLESHEETS
 from .state.base import State
 from repeat.pages.login import login
 from repeat.pages.signup import signup
-# from repeat.pages.recipes import recipes
+from repeat.pages.recipes import recipes
 from repeat.pages.inventory import inventory
 from repeat.pages.index import index
 from repeat.pages.chat import chat
@@ -25,7 +25,7 @@ app = rx.App(
 app.add_page(index, route="/", on_load=State.check_login())
 app.add_page(login, route="/login")
 app.add_page(signup, route="/signup")
-# app.add_page(recipes, route="/recipes")
+app.add_page(recipes, route="/recipes")
 app.add_page(inventory, route="/inventory")
 app.add_page(chat, route="/chat")
 app.add_page(resources, route="/resources")

@@ -2,7 +2,7 @@ import reflex as rx
 from repeat.template import template
 from gemini.recipes import generate_recipe, substitute_recipe
 from gemini.nutrients import nutritional_value, grocery_list_nutrition, nutrient_evaluation
-from gemini.health import parse_health_stats, evaluate_health, create_plan, health_advice
+from gemini.health import evaluate_health, create_plan, health_advice
 
 filters = ['high protein', 'low fat', 'no peanuts']
 missing = ['potatoes']
@@ -95,7 +95,8 @@ class FormState(rx.State):
         self.loading= False
 
     def run_scan(self):
-        parse_health_stats()
+        pass
+        # parse_health_stats()
     
     def eval(self):
         evaluate_health()
