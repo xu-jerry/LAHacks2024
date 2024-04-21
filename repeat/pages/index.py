@@ -34,6 +34,7 @@ def content_grid():
                     width="100%",
                     display="flex",
                     justify_content="space-between",
+                    align_items="center",
                     margin_top="1em",
                     margin_bottom="3em",
                 ),
@@ -68,7 +69,7 @@ def index() -> rx.Component:
     return rx.box(
         rx.box(
             content_grid(),
-            margin_top="calc(50px + 2em)",
+            margin_top="calc(58px + 2em)",
             padding="3em",
         ),
         padding_x="4em",

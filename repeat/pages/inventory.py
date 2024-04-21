@@ -194,7 +194,8 @@ def inventory() -> rx.Component:
             width="100%",
             display="flex",
             justify_content="space-between",
-            margin_top="calc(83px + 4em)",
+            align_items="center",
+            margin_top="calc(90px + 4em)",
         ),
         rx.box(
             rx.text(
