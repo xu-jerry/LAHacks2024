@@ -1,5 +1,34 @@
 import reflex as rx
 from repeat.template import template
+from ..state.base import State
+from gemini.health import parse_health_stats, evaluate_health, create_plan
+from gemini.nutrients import grocery_list_nutrition
+
+class ProfileState(rx.State):
+    info = {}
+    goals = []
+    grocery_list = []
+    medical_record = {}
+
+    def get_info(self):
+        self.info = {
+            "age": State.user.age,
+            "gender": State.user.gender,
+            "weight": State.user.weight
+        }
+
+    def get_goals(self):
+        self.goals = State.user.goals
+    
+    def get_grocery_list(self):
+        self.grocery_list = grocery_list_nutrition(State.user.grocery_list)
+
+    def upload_record(self, image_path):
+        self.medical_record = parse_health_stats(image_path)
+    
+    def generate_goals(self):
+        evaluation = evaluate_health(self.medical_record)
+        self.goals = create_plan(evaluation)
 
 def content_grid():
     return (
