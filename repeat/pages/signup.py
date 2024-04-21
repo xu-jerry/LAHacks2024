@@ -35,7 +35,7 @@ def signup():
                 spacing="4",
             ),
             align_items="left",
-            background="white",
+            # background="white",
             border="1px solid #eaeaea",
             padding="16px",
             width="400px",
