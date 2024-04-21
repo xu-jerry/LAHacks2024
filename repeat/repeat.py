@@ -10,7 +10,7 @@ from .state.base import State
 from repeat.pages.login import login
 from repeat.pages.signup import signup
 from repeat.pages.recipes import recipes
-from repeat.pages.team import team
+from repeat.pages.inventory import inventory
 from repeat.pages.index import index
 
 # Create app instance and add index page.
@@ -23,4 +23,4 @@ app.add_page(index, route="/", on_load=State.check_login())
 app.add_page(login, route="/login")
 app.add_page(signup, route="/signup")
 app.add_page(recipes, route="/recipes")
-app.add_page(team, route="/team")
+app.add_page(inventory, route="/inventory")
