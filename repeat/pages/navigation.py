@@ -3,6 +3,8 @@ from reflex.components import lucide
 
 from repeat.styles import FONT_FAMILY
 
+from ..state.base import State
+
 
 def sidebar_link(text: str, href: str):
     return rx.link(
@@ -36,28 +38,34 @@ def sidebar(
     return rx.vstack(
         rx.hstack(
             rx.hstack(  # logo and title
-                rx.image(
-                    src=logo_src, height="28px", border_radius="8px", margin_left="2em"
-                ),
+                rx.image(src=logo_src, height="28px", border_radius="8px"),
                 rx.heading(
                     heading,
                     font_family=FONT_FAMILY,
                     size="5",
                 ),
                 spacing="3",  # between logo and title
-                margin="2em",  # entire navbar
             ),
             rx.hstack(  # navbar links
                 *sidebar_links,
                 padding_x="2em",  # Reduce padding between navbar links
-                margin_left="10em",
+            ),
+            rx.hstack(
+                rx.link(
+                    rx.image(src="/account.svg"),
+                    href="/profile",
+                ),
+                rx.text("Log out", on_click=State.logout),
+                align_items="center",
             ),
             position="fixed",
             height="90px",
             top="0px",
             align_items="center",
+            width="100%",
             z_index="10",
             background_color="rgba(1, 5, 15)",
+            padding_x="7em",
             # backdrop_filter="blur(10px)",
             # padding="2em", # entire navbar
         ),
