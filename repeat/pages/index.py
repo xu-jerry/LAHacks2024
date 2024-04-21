@@ -23,30 +23,37 @@ from repeat.template import template
 
 
 def content_grid():
-    return rx.chakra.grid(
-        rx.vstack(
-            rx.hstack(
-                rx.text("Hello, Jerames Zhang 👋", font_size="2rem", font_weight="600"),
-                rx.image(src="/dashboard/search.svg"),
-                width="100%",
-                margin_bottom="3em",
-            ),
-            rx.hstack(
-                rx.image(src="/dashboard/progress.svg"),
-                rx.image(src="/dashboard/goal.svg"),
-                rx.vstack(
-                    rx.image(src="/dashboard/grocery_list.svg"),
-                    rx.image(src="/dashboard/medical.svg"),
-                    height="100%",
+    return (
+        rx.chakra.grid(
+            rx.vstack(
+                rx.hstack(
+                    rx.text(
+                        "Hello, Jerames Zhang 👋", font_size="2rem", font_weight="600"
+                    ),
+                    rx.image(src="/dashboard/search.svg"),
+                    width="100%",
+                    margin_bottom="3em",
                 ),
-                width="100%",
-                margin_bottom="2em",
+                rx.hstack(
+                    rx.image(src="/dashboard/progress.svg"),
+                    rx.image(src="/dashboard/goal.svg"),
+                    rx.vstack(
+                        rx.image(src="/dashboard/grocery_list.svg"),
+                        rx.image(src="/dashboard/medical.svg"),
+                        height="100%",
+                    ),
+                    width="100%",
+                    margin_bottom="2em",
+                ),
+                rx.image(
+                    src="/dashboard/recipes.svg", margin_bottom="2em", width="100%"
+                ),
+                rx.image(
+                    src="/dashboard/summary.svg", margin_bottom="2em", width="100%"
+                ),
             ),
-            rx.image(src="/dashboard/recipes.svg", margin_bottom="2em", width="100%"),
-            rx.image(src="/dashboard/summary.svg", margin_bottom="2em", width="100%"),
-            
         ),
-    ),
+    )
 
 
 @template
