@@ -24,7 +24,7 @@ def login():
                 spacing="4",
             ),
             align_items="left",
-            background="white",
+            background="rgba(255, 255, 255, 0.8)",
             border="1px solid #eaeaea",
             padding="16px",
             width="400px",
