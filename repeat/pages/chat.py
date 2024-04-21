@@ -6,6 +6,7 @@ from gemini.nutrients import nutritional_value, nutrient_evaluation
 from gemini.health import health_advice
 from ..state.base import State
 
+
 class FormState(rx.State):
     form_data: dict = {}
     recipe_lines = []
@@ -21,7 +22,9 @@ class FormState(rx.State):
         self.form_data = form_data
         self.loading = True
         yield
-        recipes = generate_recipe(3, self.form_data["ingredients"], State.user.health_restrictions)
+        recipes = generate_recipe(
+            3, self.form_data["ingredients"], State.user.health_restrictions
+        )
         self.recipes = recipes
         self.loading = False
 
@@ -34,17 +37,19 @@ class FormState(rx.State):
         self.nutritional_lines = nutritional_lines
         print(nutritional_lines)
         self.loading = False
-      
+
     def substitute_ingredient(self):
         recipe = self.recipes[0]
-        #TODO: replace missing with the user input
+        # TODO: replace missing with the user input
         self.loading = True
         yield
-        substitute_lines = substitute_recipe(recipe, "carrots", State.user.inventory_ingredients)
+        substitute_lines = substitute_recipe(
+            recipe, "carrots", State.user.inventory_ingredients
+        )
         self.substitute_lines = substitute_lines
         print(substitute_lines)
         self.loading = False
-    
+
     def nutritional_advice(self, nutrient):
         return nutrient_evaluation(nutrient)
 
@@ -74,25 +79,24 @@ def chat() -> rx.Component:
                 border_right="0.5px solid rgba(255,255,255,0.3)",
             ),
             rx.box(
-                rx.text("How can I help?", font_size="3em", font_weight="600"),
-                rx.text("Select from a category below.", font_size="1.5em", color="rgba(255,255,255,0.6)", margin_bottom="2em"),
-                rx.cond(
-                    FormState.loading,
-                    rx.chakra.circular_progress(is_indeterminate=True),
-                    rx.foreach(
-                        FormState.recipe_lines, lambda line: rx.box(rx.text(line))
-                    ),
+                rx.text(
+                    "How can I help?",
+                    font_size="3em",
+                    font_weight="600",
+                    margin_bottom="0.5em",
                 ),
                 rx.hstack(
                     rx.image(src="/chat/goals.svg"),
-                    rx.image(src="/chat/nutrition.svg"),
+                    rx.image(
+                        src="/chat/nutrition.svg",
+                        on_click=FormState.get_nutritional_value,
+                    ),
                     rx.image(src="/chat/recipes.svg"),
                     rx.image(src="/chat/health.svg"),
                     width="100%",
                     display="flex",
                     justify_content="space-between",
                 ),
-                rx.spacer(margin_y="50px"),
                 rx.foreach(
                     FormState.recipes,
                     lambda recipe: rx.box(
@@ -105,7 +109,7 @@ def chat() -> rx.Component:
                         ),
                         rx.divider(),
                         rx.text(
-                            "Time",
+                            "Time (in hours)",
                             margin_top="1em",
                             font_weight="600",
                             font_size="1.5em",
@@ -132,40 +136,102 @@ def chat() -> rx.Component:
                             recipe["instructions"].to_string(),
                             color="rgba(255,255,255,0.6)",
                         ),
-                        direction="row",  # Arrange recipe cards horizontally
-                        flex="1",  # Allow the row of cards to grow to occupy available space
-                        padding="3em",  # Add padding to the row of cards
+                        padding="5em",
                         margin_y="2em",  # Add some margin between each recipe card
                         background_color="rgba(50,50,50,0.5)",  # Set background color of recipe card
                         border_radius="12px",  # Add border radius for rounded corners
                         border="1px solid rgba(255,255,255,0.3)",  # Add border to recipe card
                     ),
                 ),
+                rx.spacer(margin_y="1em"),
+                rx.cond(
+                    FormState.loading,
+                    rx.chakra.circular_progress(is_indeterminate=True),
+                    rx.foreach(
+                        FormState.recipe_lines, lambda line: rx.box(rx.text(line))
+                    ),
+                ),
+                rx.spacer(margin_y="1em"),
                 rx.form(
+                    rx.text(
+                        "Generate recipes with specific ingredients, tailored to your health conditions.",
+                        font_size="0.8em",
+                        color="rgba(255,255,255,0.6)",
+                    ),
                     rx.hstack(
                         rx.input(
-                            placeholder="Ingredients",
+                            placeholder="Ingredient(s)",
                             name="ingredients",
+                            margin_right="1em",
+                            width="60em",
+                            padding="1.5em",
                         ),
-                        rx.button("Submit", type="submit"),
+                        rx.spacer(),  # Adding a spacer to fill the extra space
+                        rx.button("Submit", type="submit", padding="1.5em"),
+                        width="100%",
+                        display="flex",
+                        justify_content="space-between",
+                        margin_bottom="1em",
                     ),
                     on_submit=FormState.build_recipes,
                     reset_on_submit=True,
                 ),
-                rx.hstack(
-                    rx.button(
-                        "Nutrional Value", on_click=FormState.get_nutritional_value
+                rx.form(
+                    rx.text(
+                        "Get nutritional value of a recipe.",
+                        font_size="0.8em",
+                        color="rgba(255,255,255,0.6)",
                     ),
-                    rx.button(
-                        "Replace Ingredient", on_click=FormState.substitute_ingredient
+                    rx.hstack(
+                        rx.input(
+                            placeholder="Recipe",
+                            name="recipe",
+                            margin_right="1em",
+                            width="56em",
+                            padding="1.5em",
+                        ),
+                        rx.spacer(),
+                        rx.button(
+                            "Nutrional Value",
+                            on_click=FormState.get_nutritional_value,
+                            padding="1.5em",
+                        ),
+                        width="100%",
+                        display="flex",
+                        justify_content="space-between",
+                        margin_bottom="1em",
                     ),
-                    padding_left="250px",
-                    margin_y="5em",
+                    reset_on_submit=True,
+                ),
+                rx.form(
+                    rx.text(
+                        "Substitute an ingredient in a recipe.",
+                        font_size="0.8em",
+                        color="rgba(255,255,255,0.6)",
+                    ),
+                    rx.hstack(
+                        rx.input(
+                            placeholder="Ingredient to replace",
+                            name="ingredient",
+                            margin_right="1em",
+                            width="58em",
+                            padding="1.5em",
+                        ),
+                        rx.spacer(),
+                        rx.button(
+                            "Substitute",
+                            on_click=FormState.substitute_ingredient,
+                            padding="1.5em",
+                        ),
+                        width="100%",
+                        display="flex",
+                        justify_content="space-between",
+                        margin_bottom="10em",
+                    ),
+                    reset_on_submit=True,
                 ),
                 margin_top="calc(90px + 4em)",
                 padding_left="5em",
-                on_submit=FormState.build_recipes,
-                reset_on_submit=True,
             ),
             margin_x="7em",
         ),
@@ -173,6 +239,5 @@ def chat() -> rx.Component:
         background_image="url(../chat_gradient.png)",
         background_size="cover",
         background_position="center",
-        height="100vh",
         background_color="rgba(0,0,0)",
     )
