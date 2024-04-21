@@ -4,13 +4,13 @@ import json
 from repeat.template import template
 from gemini.recipes import generate_recipe, substitute_recipe
 from gemini.nutrients import nutritional_value
-from gemini.health import evaluate_health, create_plan, health_advice
 from ..state.base import State
 
 class FormState(rx.State):
     form_data: dict = {}
     recipe_lines = []
     nutritional_lines = []
+    substitute_lines = []
     recipes: List[Dict[str, Any]] = []
     loading = False
     filters = ["high LDL cholesterol levels", "high sodium levels"]
@@ -23,7 +23,6 @@ class FormState(rx.State):
         yield
         recipes = generate_recipe(3, self.form_data["ingredients"], State.user.health_restrictions)
         self.recipes = recipes
-        print(recipes)
         self.loading = False
 
     def get_nutritional_value(self):
@@ -35,7 +34,16 @@ class FormState(rx.State):
         self.nutritional_lines = nutritional_lines
         print(nutritional_lines)
         self.loading = False
-
+      
+    def substitute_ingredient(self):
+        recipe = self.recipes[0]
+        #TODO: replace missing with the user input
+        self.loading = True
+        yield
+        substitute_lines = substitute_recipe(recipe, "carrots", State.user.inventory_ingredients)
+        self.substitute_lines = substitute_lines
+        print(substitute_lines)
+        self.loading = False
 
 @template
 def chat() -> rx.Component:
@@ -115,6 +123,7 @@ def chat() -> rx.Component:
             ),
             rx.hstack(
                 rx.button("Nutrional Value", on_click=FormState.get_nutritional_value),
+                rx.button("Replace Ingredient", on_click=FormState.substitute_ingredient),
                 padding_left="250px",
                 margin_y="5em",
             ),

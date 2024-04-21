@@ -29,9 +29,10 @@ def generate_recipe(ingredients, number, filter):
 # Replace ingredients within the recipe to maintain taste
 def substitute_recipe(recipe, missing_ingredients, available_ingredients):
     prompt = f"""
-    Given a recipe object, substitute the missing ingredients with the available ingredients and return only the updated recipe object.
+    Given a recipe object, substitute the missing ingredients with available ingredients that have similar nutritional value.
+    Update the recipe name, ingredients, and instructions in the given recipe object.
 
-    Here is the recipe:
+    Here is the recipe object:
 
     {recipe}
 
@@ -39,7 +40,7 @@ def substitute_recipe(recipe, missing_ingredients, available_ingredients):
 
     {missing_ingredients}
 
-    Here are the available ingredients:
+    Here are the available ingredients to consider inserting:
     
     {available_ingredients}
 
