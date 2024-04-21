@@ -28,7 +28,7 @@ class FormState(rx.State):
         self.loading = True
         filter_string = ", ".join(filters)
         yield
-        recipe = generate_recipe(1, self.form_data["ingredients"], filter_string)
+        recipe = generate_recipe(3, self.form_data["ingredients"], filter_string)
         self.recipe = recipe
         self.loading = False
 
