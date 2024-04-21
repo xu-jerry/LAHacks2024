@@ -6,7 +6,6 @@ from gemini.nutrients import nutritional_value, nutrient_evaluation
 from gemini.health import health_advice
 from ..state.base import State
 
-
 class FormState(rx.State):
     form_data: dict = {}
     recipe_lines = []
@@ -22,9 +21,7 @@ class FormState(rx.State):
         self.form_data = form_data
         self.loading = True
         yield
-        recipes = generate_recipe(
-            3, self.form_data["ingredients"], State.user.health_restrictions
-        )
+        recipes = generate_recipe(3, self.form_data["ingredients"], State.user.health_restrictions)
         self.recipes = recipes
         self.loading = False
 
@@ -37,19 +34,17 @@ class FormState(rx.State):
         self.nutritional_lines = nutritional_lines
         print(nutritional_lines)
         self.loading = False
-
+      
     def substitute_ingredient(self):
         recipe = self.recipes[0]
-        # TODO: replace missing with the user input
+        #TODO: replace missing with the user input
         self.loading = True
         yield
-        substitute_lines = substitute_recipe(
-            recipe, "carrots", State.user.inventory_ingredients
-        )
+        substitute_lines = substitute_recipe(recipe, "carrots", State.user.inventory_ingredients)
         self.substitute_lines = substitute_lines
         print(substitute_lines)
         self.loading = False
-
+    
     def nutritional_advice(self, nutrient):
         return nutrient_evaluation(nutrient)
 
@@ -169,6 +164,8 @@ def chat() -> rx.Component:
                 ),
                 margin_top="calc(90px + 4em)",
                 padding_left="5em",
+                on_submit=FormState.build_recipes,
+                reset_on_submit=True,
             ),
             margin_x="7em",
         ),

@@ -1,6 +1,7 @@
 """The main index page."""
 
 import reflex as rx
+from ..state.base import State
 from repeat.data import (
     line_chart_data,
     lines,
@@ -21,6 +22,16 @@ from repeat.template import template
 
 # Content in a grid layout.
 
+class DashState(rx.State):
+    goals = []
+    grocery_list = []
+
+    def get_goals(self):
+        self.goals = State.user.goals
+    
+    def get_grocery_list(self):
+        self.grocery_list = State.user.grocery_list
+    
 
 def content_grid():
     return (
@@ -28,7 +39,7 @@ def content_grid():
             rx.vstack(
                 rx.hstack(
                     rx.text(
-                        "Hello, Jerames Zhang 👋", font_size="3rem", font_weight="600"
+                        "Hello, Jerames Zhang 👋", font_size="3rem", font_weight="600", color="white"
                     ),
                     rx.image(src="/dashboard/search.svg"),
                     width="100%",
