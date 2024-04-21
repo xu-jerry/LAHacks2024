@@ -97,8 +97,8 @@ ENV/
 MANIFEST
 __pycache__/
 __pypackages__/
-alembic/
 alembic.ini
+alembic/
 build/
 celerybeat-schedule
 celerybeat.pid
