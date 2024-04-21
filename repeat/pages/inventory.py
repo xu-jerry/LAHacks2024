@@ -4,26 +4,30 @@ from ..state.base import State
 
 from repeat.template import template
 
+import json
+
 class Appliances(rx.State):
     appliances: List[str] = ['Fridge', 'Microwave', 'Oven']
 
-class Foods(rx.State):
-    foods: Dict[str, List[str]] = {
-        'Carbohydrates': ['Rice', 'Brown Rice', 'White Bread', 'Whole Wheat Bread'], 
-        'Vegetables': ['Garlic', 'Chili Pepper', 'Tomato', 'Carrot', 'Potato'],
-        'Proteins': ['Chicken', 'Pork', 'Tofu', 'Eggs'],
-        'Dairy': ['Yogurt', 'Ricotta'],
-        'Fruits': ['Blueberries', 'Strawberries'],
-        'Other': ['Salt', 'Pepper', 'Hot Sauce']
-    }
+foods: Dict[str, List[str]] = {
+    'Carbohydrates': ['Rice', 'Brown Rice', 'White Bread', 'Whole Wheat Bread'], 
+    'Vegetables': ['Garlic', 'Chili Pepper', 'Tomato', 'Carrot', 'Potato'],
+    'Proteins': ['Chicken', 'Pork', 'Tofu', 'Eggs'],
+    'Dairy': ['Yogurt', 'Ricotta'],
+    'Fruits': ['Blueberries', 'Strawberries'],
+    'Other': ['Salt', 'Pepper', 'Hot Sauce']
+}
 
-    @rx.var
-    def cur_foods(self) -> Dict[str, Dict[str, bool]]:
-        return {key : {name: False for name in value} for key, value in self.foods.items()}
+class Foods(rx.State):
+    cur_foods: Dict[str, Dict[str, bool]] = {key : {name: False for name in value} for key, value in foods.items()}
+    num_foods: Dict[str, int] = {key : 0 for key in foods.keys()}
 
     def update_local_inventory(self, category: str, food: str, selected: bool):
-        self.cur_foods[category][food] = ~selected
-        rx.console_log("hi")
+        self.cur_foods[category][food] = not selected
+        if selected:
+            self.num_foods[category] -= 1
+        else:
+            self.num_foods[category] += 1
         
 def update_inventory():
     pass
@@ -40,29 +44,24 @@ def update_inventory():
 
 
 def make_category(food_group: List):
+    print(food_group[1])
     return rx.box(rx.text(food_group[0]),
+                  rx.text(Foods.num_foods[food_group[0].to_string()[1:-1]]),
+                #   rx.text(json.loads(str(food_group[1].to_string()))),
+                #   rx.text(len([k for k, v in dict(food_group[0].to_string()) if v])),
                   rx.hstack(
                       rx.foreach(food_group[1],
                                  lambda food: rx.cond(
                                      food[1],
                                      rx.button(food[0],
                                                color="rgba(255,0,0,1)",
-                                               on_click=lambda: Foods.update_local_inventory(Foods, food_group[0].to_string(), food[0].to_string(), food[1])),
-                                               rx.button(food),
+                                               on_click=lambda: Foods.update_local_inventory(food_group[0], food[0], food[1])),
+                                     rx.button(food[0],
+                                               on_click=lambda: Foods.update_local_inventory(food_group[0], food[0], food[1])),
                                 )
                        )
                    ),
     )
-
-class Test(rx.State):
-    def test1(self):
-        print("hello1")
-        print(State.user)
-        print(State.user.to_string())
-
-def test2():
-    rx.console_log("Hello World!")
-
 
 @template
 def inventory() -> rx.Component:
@@ -72,8 +71,6 @@ def inventory() -> rx.Component:
                 margin_top="calc(50px + 2em)",
                 padding="2em",
             ),
-            rx.button("test1", on_click=Test.test1),
-            rx.button("test2", on_click=rx.console_log(State.user)),
             rx.box(
                 rx.text("Appliances"),
                 margin_top="calc(2em)",
