@@ -38,9 +38,7 @@ def sidebar(
     return rx.vstack(
         rx.hstack(
             rx.hstack(  # logo and title
-                rx.image(
-                    src=logo_src, height="28px", border_radius="8px"
-                ),
+                rx.image(src=logo_src, height="28px", border_radius="8px"),
                 rx.heading(
                     heading,
                     font_family=FONT_FAMILY,
@@ -53,7 +51,10 @@ def sidebar(
                 padding_x="2em",  # Reduce padding between navbar links
             ),
             rx.hstack(
-                rx.image(src="/account.svg"),
+                rx.link(
+                    rx.image(src="/account.svg"),
+                    href="/profile",
+                ),
                 rx.text("Log out", on_click=State.logout),
                 align_items="center",
             ),

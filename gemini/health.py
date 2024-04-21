@@ -1,6 +1,6 @@
+# from IPython.display import Image
 from gemini.base import model
 import json
-from IPython.display import Image
 
 # Scans an image to structure the user's health record
 def parse_health_stats():

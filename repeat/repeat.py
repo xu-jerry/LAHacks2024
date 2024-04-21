@@ -14,6 +14,7 @@ from repeat.pages.inventory import inventory
 from repeat.pages.index import index
 from repeat.pages.chat import chat
 from repeat.pages.resources import resources
+from repeat.pages.profile import profile
 
 # Create app instance and add index page.
 app = rx.App(
@@ -28,3 +29,4 @@ app.add_page(signup, route="/signup")
 app.add_page(inventory, route="/inventory")
 app.add_page(chat, route="/chat")
 app.add_page(resources, route="/resources")
+app.add_page(profile, route="/profile")

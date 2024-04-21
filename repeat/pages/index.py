@@ -28,7 +28,7 @@ def content_grid():
             rx.vstack(
                 rx.hstack(
                     rx.text(
-                        "Hello, Jerames Zhang 👋", font_size="2rem", font_weight="600"
+                        "Hello, Jerames Zhang 👋", font_size="3rem", font_weight="600"
                     ),
                     rx.image(src="/dashboard/search.svg"),
                     width="100%",
