@@ -100,3 +100,10 @@ INGREDIENTS:
     "unit": "teaspoon"
   }
 ]
+
+user_info = """
+{"age": 22, "gender": "male", "weight": "188lbs"}
+"""
+health_record = """
+{"HDL Cholesterol": "58 mg/dL", "LDL Cholesterol": "83 mg/DL", "Triglycerides": "48 mg/dL", "Glucose, Serum": "99 mg/dL", "BUN": "20 mg/dL", "Creatine, Serum": "1.44 mg/dL", "eGFR": "51 mL/min/1.73", "Sodium": "142 mmol/L", "Potassium": "4.2 mmol/L", "Chloride": "104 mmol/L", "Carbon dioxide": "29 mmol/L", "Calcium": "9.5 mg/dL", "Protein, Total": "6.6 g/dL", "Albumin": "4.3 g/dL", "Globulin": "2.3 g/dL", "Bilirubin": "0.5 mg/dL", "Alkaline": "66 IU/L", "AST": "14 IU/L", "ALT": "18 IU/L", "Lipoprotein (a)": "174 mg/dL"}
+"""

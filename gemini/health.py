@@ -21,13 +21,13 @@ def evaluate_health(user_info, health_record):
     prompt = f"""
     Please return a JSON of an evaluation on a user's health record. 
 
-    A user's physical attributes should influence whether their health record number is "too low", "too high", or "just right".
+    A user's physical attributes should influence whether their health record number is "too low", "low", "just right", "high", "too high" relative to the healthy ranges.
 
     The user's information is listed here. The major influencing factors are age and weight:
 
     {user_info}
 
-    The output JSON should follow this schema:
+    The output JSON should follow this schema for each test:
     \{{"iron": \{{"score": NUMBER, "status": CONDITION}}}}
     CONDITION follows "too low", "too high", or "just right".
 
@@ -37,6 +37,7 @@ def evaluate_health(user_info, health_record):
     """
     response = model.generate_content(prompt)
     evaluation = json.loads(response.text)
+    print(response.text)
     return evaluation[0]
 
 # create an action plan for certain categories to avoid
