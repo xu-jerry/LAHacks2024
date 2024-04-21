@@ -44,7 +44,6 @@ def update_inventory():
 
 
 def make_category(food_group: List):
-    print(food_group[1])
     return rx.box(rx.text(food_group[0]),
                   rx.text(Foods.num_foods[food_group[0].to_string()[1:-1]]),
                 #   rx.text(json.loads(str(food_group[1].to_string()))),
