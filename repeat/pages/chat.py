@@ -119,98 +119,125 @@ class FormState(rx.State):
 @template
 def chat() -> rx.Component:
     return rx.box(
-        rx.box(
+        rx.hstack(
             rx.box(
-                rx.text("How can I help?", font_size="2.5em"),
-                font_weight="600",
-                margin_top="calc(50px + 2em)",
-                padding_y="2em",
-            ),
-            rx.text("Using the following filters:"),
-            rx.foreach(filters, lambda filter: rx.box(rx.text(filter))),
-            rx.cond(
-                FormState.loading,
-                rx.chakra.circular_progress(is_indeterminate=True),
-                rx.foreach(FormState.lines, lambda line: rx.box(rx.text(line))),
-            ),
-            rx.spacer(margin_y="50px"),
-            rx.foreach(
-                FormState.recipe,
-                lambda recipe: rx.box(
-                    rx.text(
-                        recipe["name"],
-                        font_weight="800",
-                        text_align="center",
-                        font_size="2em",
-                        margin_bottom="0.8em",
+                rx.text("Suggestions based on:"),
+                rx.foreach(
+                    filters,
+                    lambda filter: rx.box(
+                        rx.text(filter),
+                        border_radius="8px",
+                        background_color="rgba(255,255,255,0.1)",
+                        margin_y="0.5em",
+                        padding="0.5em 1em",
                     ),
-                    rx.divider(),
-                    rx.text(
-                        "Time",
-                        margin_top="1em",
-                        font_weight="600",
-                        font_size="1.5em",
-                    ),
-                    rx.text(recipe["time"], color="rgba(255,255,255,0.6)"),
-                    rx.text(
-                        "Ingredients",
-                        margin_top="1em",
-                        font_weight="600",
-                        font_size="1.5em",
-                    ),
-                    # Extracting only ingredient names from the recipe
-                    rx.text(
-                        recipe["ingredients"].to_string(), color="rgba(255,255,255,0.6)"
-                    ),
-                    rx.text(
-                        "Instructions",
-                        margin_top="1em",
-                        font_weight="600",
-                        font_size="1.5em",
-                    ),
-                    rx.text(
-                        recipe["instructions"].to_string(),
-                        color="rgba(255,255,255,0.6)",
-                    ),
-                    direction="row",  # Arrange recipe cards horizontally
-                    flex="1",  # Allow the row of cards to grow to occupy available space
-                    padding="3em",  # Add padding to the row of cards
-                    margin_y="2em",  # Add some margin between each recipe card
-                    background_color="rgba(50,50,50,0.5)",  # Set background color of recipe card
-                    border_radius="12px",  # Add border radius for rounded corners
-                    border="1px solid rgba(255,255,255,0.3)",  # Add border to recipe card
                 ),
+                margin_top="calc(90px + 4em)",
+                padding_right="5em",
+                height="100%",
+                border_right="0.5px solid rgba(255,255,255,0.3)",
             ),
-            rx.form(
+            rx.box(
+                rx.box(
+                    rx.text("How can I help?", font_size="3em", font_weight="600"),
+                    margin_top="calc(90px + 4em)",
+                ),
                 rx.hstack(
-                    rx.input(
-                        placeholder="Ingredients",
-                        name="ingredients",
-                    ),
-                    rx.button("Submit", type="submit"),
+                    rx.image(src="/chat/goals.svg"),
+                    rx.image(src="/chat/nutrition.svg"),
+                    rx.image(src="/chat/recipes.svg"),
+                    rx.image(src="/chat/health.svg"),
+                    width="100%",
+                    display="flex",
+                    justify_content="space-between",
                 ),
-                on_submit=FormState.handle_submit,
-                reset_on_submit=True,
+                rx.cond(
+                    FormState.loading,
+                    rx.chakra.circular_progress(is_indeterminate=True),
+                    rx.foreach(FormState.lines, lambda line: rx.box(rx.text(line))),
+                ),
+                rx.spacer(margin_y="50px"),
+                rx.foreach(
+                    FormState.recipe,
+                    lambda recipe: rx.box(
+                        rx.text(
+                            recipe["name"],
+                            font_weight="800",
+                            text_align="center",
+                            font_size="2em",
+                            margin_bottom="0.8em",
+                        ),
+                        rx.divider(),
+                        rx.text(
+                            "Time",
+                            margin_top="1em",
+                            font_weight="600",
+                            font_size="1.5em",
+                        ),
+                        rx.text(recipe["time"], color="rgba(255,255,255,0.6)"),
+                        rx.text(
+                            "Ingredients",
+                            margin_top="1em",
+                            font_weight="600",
+                            font_size="1.5em",
+                        ),
+                        # Extracting only ingredient names from the recipe
+                        rx.text(
+                            recipe["ingredients"].to_string(),
+                            color="rgba(255,255,255,0.6)",
+                        ),
+                        rx.text(
+                            "Instructions",
+                            margin_top="1em",
+                            font_weight="600",
+                            font_size="1.5em",
+                        ),
+                        rx.text(
+                            recipe["instructions"].to_string(),
+                            color="rgba(255,255,255,0.6)",
+                        ),
+                        direction="row",  # Arrange recipe cards horizontally
+                        flex="1",  # Allow the row of cards to grow to occupy available space
+                        padding="3em",  # Add padding to the row of cards
+                        margin_y="2em",  # Add some margin between each recipe card
+                        background_color="rgba(50,50,50,0.5)",  # Set background color of recipe card
+                        border_radius="12px",  # Add border radius for rounded corners
+                        border="1px solid rgba(255,255,255,0.3)",  # Add border to recipe card
+                    ),
+                ),
+                rx.form(
+                    rx.hstack(
+                        rx.input(
+                            placeholder="Ingredients",
+                            name="ingredients",
+                        ),
+                        rx.button("Submit", type="submit"),
+                    ),
+                    on_submit=FormState.handle_submit,
+                    reset_on_submit=True,
+                ),
+                rx.hstack(
+                    rx.button("Ingredients", on_click=FormState.recipe_info),
+                    rx.button("Substitute", on_click=FormState.sub_rec),
+                    rx.button("Nutrition", on_click=FormState.nut_rec),
+                    rx.button("Grocery List", on_click=FormState.groc_list),
+                    rx.button("Run", on_click=FormState.run_scan),
+                    rx.button("Evaluate", on_click=FormState.eval),
+                    rx.button("Plan", on_click=FormState.plan),
+                    rx.button("Advice", on_click=FormState.advice),
+                    rx.button("Nutrient Eval", on_click=FormState.nut_eval),
+                    padding_left="250px",
+                    margin_y="5em",
+                ),
+                margin_left="5em",
+                # height="100vh",
             ),
-            rx.hstack(
-                rx.button("Ingredients", on_click=FormState.recipe_info),
-                rx.button("Substitute", on_click=FormState.sub_rec),
-                rx.button("Nutrition", on_click=FormState.nut_rec),
-                rx.button("Grocery List", on_click=FormState.groc_list),
-                rx.button("Run", on_click=FormState.run_scan),
-                rx.button("Evaluate", on_click=FormState.eval),
-                rx.button("Plan", on_click=FormState.plan),
-                rx.button("Advice", on_click=FormState.advice),
-                rx.button("Nutrient Eval", on_click=FormState.nut_eval),
-                padding_left="250px",
-                margin_y="5em",
-            ),
-            padding_x="250px",
-            background_image="url(../chat_gradient.png)",
-            background_size="cover",
-            background_position="center",
-            # height="100vh",
+            margin_x="7em",
         ),
         # height="calc(100vh - 90px)",
         background_color="rgba(0,0,0)",
+        background_image="url(../chat_gradient.png)",
+        background_size="cover",
+        background_position="center",
+        height="100vh",
     )
