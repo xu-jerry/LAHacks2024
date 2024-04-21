@@ -2,118 +2,59 @@ import reflex as rx
 from typing import List, Dict, Any
 from repeat.template import template
 from gemini.recipes import generate_recipe, substitute_recipe
-from gemini.nutrients import (
-    nutritional_value,
-    grocery_list_nutrition,
-    nutrient_evaluation,
-)
-from gemini.health import evaluate_health, create_plan, health_advice
-
-filters = ["high protein", "low fat", "no peanuts"]
-missing = ["potatoes"]
-available = ["carrots"]
+from gemini.nutrients import nutritional_value, nutrient_evaluation
+from gemini.health import health_advice
+from ..state.base import State
 
 
 class FormState(rx.State):
     form_data: dict = {}
-    lines = []
-    recipe: List[Dict[str, Any]] = []
-    ingredients = ""
+    recipe_lines = []
+    nutritional_lines = []
+    substitute_lines = []
+    recipes: List[Dict[str, Any]] = []
     loading = False
+    filters = ["high LDL cholesterol levels", "high sodium levels"]
 
-    def handle_submit(self, form_data: dict):
+    def build_recipes(self, form_data: dict):
         """Handle the form submit."""
 
         self.form_data = form_data
         self.loading = True
-        filter_string = ", ".join(filters)
         yield
-        recipe = generate_recipe(3, self.form_data["ingredients"], filter_string)
-        self.recipe = recipe
+        recipes = generate_recipe(
+            3, self.form_data["ingredients"], State.user.health_restrictions
+        )
+        self.recipes = recipes
         self.loading = False
 
-    def recipe_info(self):
-        """Test recipe_ingredients"""
+    def get_nutritional_value(self):
+        recipe = self.recipes[0]
+        ingredients = str(recipe["ingredients"])
         self.loading = True
         yield
-        self.ingredients = self.recipe["ingredients"]
+        nutritional_lines = nutritional_value(ingredients)
+        self.nutritional_lines = nutritional_lines
+        print(nutritional_lines)
         self.loading = False
 
-    def sub_rec(self):
+    def substitute_ingredient(self):
+        recipe = self.recipes[0]
+        # TODO: replace missing with the user input
         self.loading = True
         yield
-        substitute_recipe(self.recipe, missing, available)
+        substitute_lines = substitute_recipe(
+            recipe, "carrots", State.user.inventory_ingredients
+        )
+        self.substitute_lines = substitute_lines
+        print(substitute_lines)
         self.loading = False
 
-    def nut_rec(self):
-        self.loading = True
-        yield
-        nutritional_value(self.ingredients)
-        self.loading = False
+    def nutritional_advice(self, nutrient):
+        return nutrient_evaluation(nutrient)
 
-    def groc_list(self):
-        ingredients = """
-          {
-    "ingredient": "Chicken breasts",
-    "quantity": 2,
-    "unit": ""
-  },
-  {
-    "ingredient": "Potatoes",
-    "quantity": 1.5,
-    "unit": "pounds"
-  },
-  {
-    "ingredient": "Lemon",
-    "quantity": 1,
-    "unit": ""
-  },
-  {
-    "ingredient": "Fresh rosemary",
-    "quantity": 2,
-    "unit": "sprigs"
-  },
-  {
-    "ingredient": "Fresh thyme",
-    "quantity": 2,
-    "unit": "sprigs"
-  },
-  {
-    "ingredient": "Olive oil",
-    "quantity": 2,
-    "unit": "tablespoons"
-  },
-  {
-    "ingredient": "Salt",
-    "quantity": 1,
-    "unit": "teaspoon"
-  },
-  {
-    "ingredient": "Black pepper",
-    "quantity": 0.5,
-    "unit": "teaspoon"
-  }
-        """
-        self.loading = True
-        yield
-        grocery_list_nutrition(ingredients)
-        self.loading = False
-
-    def run_scan(self):
-        pass
-        # parse_health_stats()
-
-    def eval(self):
-        evaluate_health()
-
-    def plan(self):
-        create_plan()
-
-    def advice(self):
-        health_advice()
-
-    def nut_eval(self):
-        nutrient_evaluation("hdl cholesterol")
+    def health_response(self, question):
+        return health_advice(question)
 
 
 @template
@@ -123,7 +64,7 @@ def chat() -> rx.Component:
             rx.box(
                 rx.text("Suggestions based on:"),
                 rx.foreach(
-                    filters,
+                    FormState.filters,
                     lambda filter: rx.box(
                         rx.text(filter),
                         border_radius="8px",
@@ -134,13 +75,18 @@ def chat() -> rx.Component:
                 ),
                 margin_top="calc(90px + 4em)",
                 padding_right="5em",
-                height="100%",
+                height="500px",
                 border_right="0.5px solid rgba(255,255,255,0.3)",
             ),
             rx.box(
-                rx.box(
-                    rx.text("How can I help?", font_size="3em", font_weight="600"),
-                    margin_top="calc(90px + 4em)",
+                rx.text("How can I help?", font_size="3em", font_weight="600"),
+                rx.text("Select from a category below.", font_size="1.5em", color="rgba(255,255,255,0.6)", margin_bottom="2em"),
+                rx.cond(
+                    FormState.loading,
+                    rx.chakra.circular_progress(is_indeterminate=True),
+                    rx.foreach(
+                        FormState.recipe_lines, lambda line: rx.box(rx.text(line))
+                    ),
                 ),
                 rx.hstack(
                     rx.image(src="/chat/goals.svg"),
@@ -151,14 +97,9 @@ def chat() -> rx.Component:
                     display="flex",
                     justify_content="space-between",
                 ),
-                rx.cond(
-                    FormState.loading,
-                    rx.chakra.circular_progress(is_indeterminate=True),
-                    rx.foreach(FormState.lines, lambda line: rx.box(rx.text(line))),
-                ),
                 rx.spacer(margin_y="50px"),
                 rx.foreach(
-                    FormState.recipe,
+                    FormState.recipes,
                     lambda recipe: rx.box(
                         rx.text(
                             recipe["name"],
@@ -213,31 +154,28 @@ def chat() -> rx.Component:
                         ),
                         rx.button("Submit", type="submit"),
                     ),
-                    on_submit=FormState.handle_submit,
+                    on_submit=FormState.build_recipes,
                     reset_on_submit=True,
                 ),
                 rx.hstack(
-                    rx.button("Ingredients", on_click=FormState.recipe_info),
-                    rx.button("Substitute", on_click=FormState.sub_rec),
-                    rx.button("Nutrition", on_click=FormState.nut_rec),
-                    rx.button("Grocery List", on_click=FormState.groc_list),
-                    rx.button("Run", on_click=FormState.run_scan),
-                    rx.button("Evaluate", on_click=FormState.eval),
-                    rx.button("Plan", on_click=FormState.plan),
-                    rx.button("Advice", on_click=FormState.advice),
-                    rx.button("Nutrient Eval", on_click=FormState.nut_eval),
+                    rx.button(
+                        "Nutrional Value", on_click=FormState.get_nutritional_value
+                    ),
+                    rx.button(
+                        "Replace Ingredient", on_click=FormState.substitute_ingredient
+                    ),
                     padding_left="250px",
                     margin_y="5em",
                 ),
-                margin_left="5em",
-                # height="100vh",
+                margin_top="calc(90px + 4em)",
+                padding_left="5em",
             ),
             margin_x="7em",
         ),
         # height="calc(100vh - 90px)",
-        background_color="rgba(0,0,0)",
         background_image="url(../chat_gradient.png)",
         background_size="cover",
         background_position="center",
         height="100vh",
+        background_color="rgba(0,0,0)",
     )
