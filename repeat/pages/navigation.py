@@ -61,6 +61,8 @@ def sidebar(
             position="fixed",
             height="90px",
             top="0px",
+            display="flex",
+            justify_content="space-between",
             align_items="center",
             width="100%",
             z_index="10",

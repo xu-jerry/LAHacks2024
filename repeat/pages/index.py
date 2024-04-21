@@ -32,6 +32,9 @@ def content_grid():
                     ),
                     rx.image(src="/dashboard/search.svg"),
                     width="100%",
+                    display="flex",
+                    justify_content="space-between",
+                    margin_top="1em",
                     margin_bottom="3em",
                 ),
                 rx.hstack(
@@ -41,8 +44,12 @@ def content_grid():
                         rx.image(src="/dashboard/grocery_list.svg"),
                         rx.image(src="/dashboard/medical.svg"),
                         height="100%",
+                        display="flex",
+                        justify_content="space-between",
                     ),
                     width="100%",
+                    display="flex",
+                    justify_content="space-between",
                     margin_bottom="2em",
                 ),
                 rx.image(
