@@ -21,42 +21,41 @@ from repeat.template import template
 
 # Content in a grid layout.
 
+
 def content_grid():
     return rx.chakra.grid(
-        *[
-            rx.chakra.grid_item(stat_card(*c), col_span=1, row_span=1)
-            for c in stat_card_data
-        ],
-        rx.chakra.grid_item(
-            line_chart(data=line_chart_data, data_key="name", lines=lines),
-            col_span=3,
-            row_span=2,
+        rx.vstack(
+            rx.hstack(
+                rx.text("Hello, Jerames Zhang 👋", font_size="2rem", font_weight="600"),
+                rx.image(src="/dashboard/search.svg"),
+                width="100%",
+                margin_bottom="3em",
+            ),
+            rx.hstack(
+                rx.image(src="/dashboard/progress.svg"),
+                rx.image(src="/dashboard/goal.svg"),
+                rx.vstack(
+                    rx.image(src="/dashboard/grocery_list.svg"),
+                    rx.image(src="/dashboard/medical.svg"),
+                    height="100%",
+                ),
+                width="100%",
+                margin_bottom="2em",
+            ),
+            rx.image(src="/dashboard/recipes.svg", margin_bottom="2em", width="100%"),
+            rx.image(src="/dashboard/summary.svg", margin_bottom="2em", width="100%"),
+            
         ),
-        rx.chakra.grid_item(
-            pie_chart(data=pie_chart_data, data_key="value", name_key="name"),
-            row_span=2,
-            col_span=1,
-        ),
-        rx.chakra.grid_item(table(tabular_data=tabular_data), col_span=4, row_span=2),
-        rx.chakra.grid_item(
-            area_chart(data=area_chart_data, data_key="name", areas=areas),
-            col_span=3,
-            row_span=2,
-        ),
-        template_columns="repeat(4, 1fr)",
-        width="100%",
-        gap=4,
-        row_gap=8,
-    )
+    ),
 
 
 @template
 def index() -> rx.Component:
     return rx.box(
-            rx.box(
-                content_grid(),
-                margin_top="calc(50px + 2em)",
-                padding="3em",
-            ),
-            padding_x="4em",
-        )
+        rx.box(
+            content_grid(),
+            margin_top="calc(50px + 2em)",
+            padding="3em",
+        ),
+        padding_x="4em",
+    )
