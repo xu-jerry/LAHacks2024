@@ -1,4 +1,4 @@
-from IPython.display import Image
+# from IPython.display import Image
 from gemini.base import model
 import json
 
