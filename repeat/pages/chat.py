@@ -1,9 +1,9 @@
 import reflex as rx
 from typing import List, Dict, Any
-import json
 from repeat.template import template
 from gemini.recipes import generate_recipe, substitute_recipe
-from gemini.nutrients import nutritional_value
+from gemini.nutrients import nutritional_value, nutrient_evaluation
+from gemini.health import health_advice
 from ..state.base import State
 
 class FormState(rx.State):
@@ -44,6 +44,12 @@ class FormState(rx.State):
         self.substitute_lines = substitute_lines
         print(substitute_lines)
         self.loading = False
+    
+    def nutritional_advice(self, nutrient):
+        return nutrient_evaluation(nutrient)
+
+    def health_response(self, question):
+        return health_advice(question)
 
 @template
 def chat() -> rx.Component:

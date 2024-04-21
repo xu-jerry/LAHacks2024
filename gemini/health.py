@@ -3,21 +3,20 @@ from gemini.base import model
 import json
 
 # Scans an image to structure the user's health record
-# def parse_health_stats():
-#     image = Image(filename="assets/health_record.png")
-#     prompt = """
-#     Please return a JSON object containing the keys for what was being tested and the result and units as the value.
+def parse_health_stats(image):
+    prompt = """
+    Please return a JSON object containing the keys for what was being tested and the result and units as the value.
 
-#     The object should follow the structure:
-#     \{{"LDL Cholesterol": "83 mg/DL"}}
+    The object should follow the structure:
+    \{{"LDL Cholesterol": "83 mg/DL"}}
 
-    # Only record the following fields as keys:
-    # HDL_Cholesterol, LDL_Cholesterol, Triglycerides, Glucose, Sodium, Potassium, Chloride, Carbon_dioxide, Calcium, Protein, Lipoprotein: str
+    Only record the following fields as keys:
+    HDL_Cholesterol, LDL_Cholesterol, Triglycerides, Glucose, Sodium, Potassium, Chloride, Carbon_dioxide, Calcium, Protein, Lipoprotein: str
 
-    # Here is the given file:
-    # """
-    # response = model.generate_content([prompt, image])
-    # print(response.text)
+    Here is the given file:
+    """
+    response = model.generate_content([prompt, image])
+    print(response.text)
 
 # Based on a user's health record, evaluate if there are concerns for certain tests
 def evaluate_health(user_info, health_record):

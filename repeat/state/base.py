@@ -13,6 +13,21 @@ class State(rx.State):
     "age": 22,
     "gender": "male",
     "weight": "188lbs",
+    "goals": [
+    {
+        "name": "Creatine, Serum",
+        "score": 1.44,
+        "status": "too high",
+        "action": "Reduce protein intake, especially red meat, and increase water intake."
+    },
+    {
+        "name": "eGFR",
+        "score": 51,
+        "status": "too low",
+        "action": "Consult a doctor or a registered dietitian to assess kidney function and discuss dietary changes to support kidney health, such as reducing sodium and phosphorus intake."
+    }
+    ],
+    "grocery_list": [],
     "inventory_ingredients": "chicken, broccoli",
     "health_restrictions": "high LDL cholesterol levels, high sodium levels"
 }
