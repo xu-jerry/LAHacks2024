@@ -3,7 +3,7 @@ import reflex as rx
 from repeat.template import template
 from gemini.recipes import generate_recipe, substitute_recipe
 from gemini.nutrients import nutritional_value, grocery_list_nutrition
-from gemini.health import parse_health_stats, evaluate_health
+from gemini.health import parse_health_stats, evaluate_health, create_plan
 
 filters = ['high protein', 'low fat', 'no peanuts']
 missing = ['potatoes']
@@ -101,6 +101,9 @@ class FormState(rx.State):
     def eval(self):
         evaluate_health()
 
+    def plan(self):
+        create_plan()
+
 
 @template
 def recipes() -> rx.Component:
@@ -138,6 +141,7 @@ def recipes() -> rx.Component:
             rx.button("Grocery List", on_click=FormState.groc_list),
             rx.button("Run", on_click=FormState.run_scan),
             rx.button("Evaluate", on_click=FormState.eval),
+            rx.button("Plan", on_click=FormState.plan),
             padding_left="250px",
             background_image="url(../chat_gradient.png)",
             background_size="cover",
