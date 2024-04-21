@@ -19,7 +19,7 @@ class AuthState(State):
                 return rx.window_alert("Passwords do not match.")
             if session.exec(select(User).where(User.username == self.username)).first():
                 return rx.window_alert("Username already exists.")
-            self.user = User(username=self.username, password=self.password)
+            self.user = User(username=self.username, password=self.password, )
             session.add(self.user)
             session.expire_on_commit = False
             session.commit()

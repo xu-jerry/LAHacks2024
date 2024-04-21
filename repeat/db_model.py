@@ -1,34 +1,35 @@
 import reflex as rx
-from typing import List
 
 from sqlmodel import Field 
 
-class Health_Record(rx.Model):
+class Health_Record(rx.Model, table=True):
     """Model of Health Records"""
-    HDL_Cholesterol: float
-    LDL_Cholesterol: float
-    Triglycerides: float
-    Glucose: float
-    Sodium: float
-    Potassium: float
-    Chloride: float
-    Carbon_dioxide: float
-    Calcium: float
-    Protein: float
-    Lipoprotein: float
+    HDL_Cholesterol: str
+    LDL_Cholesterol: str
+    Triglycerides: str
+    Glucose: str
+    Sodium: str
+    Potassium: str
+    Chloride: str
+    Carbon_dioxide: str
+    Calcium: str
+    Protein: str
+    Lipoprotein: str
 
-class Ingredients(rx.Model):
+class Ingredients(rx.Model, table=True):
     """Model of Ingredients"""
-    ingredient: str
+    ingredient: str  = Field(primary_key=True)
     quantity: float
     unit: str
 
-class Recipe(rx.Model):
+class Recipe(rx.Model, table=True):
     """Model of Recipes"""
-    name: str
+    name: str  = Field(primary_key=True)
     time: str
-    ingredients: List[Ingredients]
-    instructions: List[str]
+    "List of Ingredients as a concatenated string"
+    # ingredients: Ingredients
+    "List of Instructions as a concatenated string"
+    instructions: str
 
 
 class User(rx.Model, table=True):
@@ -36,9 +37,11 @@ class User(rx.Model, table=True):
 
     username: str = Field(primary_key=True)
     password: str
-    inventory_ingredients: List[str]
+    "List of Ingredients as a concatenated string"
+    # inventory_ingredients: str
     age: int
     gender: str
     weight: str
-    health_record: Health_Record
-    recipes: List[Recipe]
+    # health_record: Health_Record
+    "List of Recipes as a concatenated string"
+    # recipes: Recipe
