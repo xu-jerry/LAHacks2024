@@ -26,9 +26,9 @@ class Recipe(rx.Model, table=True):
     """Model of Recipes"""
     name: str  = Field(primary_key=True)
     time: str
-    "List of Ingredients as a concatenated string"
-    # ingredients: Ingredients
-    "List of Instructions as a concatenated string"
+    # List of ingredients as a concatenated string
+    ingredients: str
+    # List of instructions as a concatenated string
     instructions: str
 
 
@@ -37,11 +37,11 @@ class User(rx.Model, table=True):
 
     username: str = Field(primary_key=True)
     password: str
-    "List of Ingredients as a concatenated string"
-    # inventory_ingredients: str
+    # List of inventory ingredients as a concatenated string
+    inventory_ingredients: str
     age: int
     gender: str
     weight: str
+    # List of health restrictions as a concatenated string
+    health_restrictions: str
     # health_record: Health_Record
-    "List of Recipes as a concatenated string"
-    # recipes: Recipe

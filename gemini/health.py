@@ -61,10 +61,7 @@ def create_plan(health_evaluation):
     return plan[0]
 
 # Give advice based on a health question
-def health_advice():
-    question = """
-    what ingredients should I add to my diet to Reduce protein intake, especially red meat, and increase water intake
-    """
+def health_advice(question):
     prompt = f"""
     Please return an array of 3 recommendations to address a health concern/question. 
     It must be constructive and feasible to improve one's lifestyle slowly.

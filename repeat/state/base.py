@@ -7,7 +7,15 @@ from repeat.db_model import User
 class State(rx.State):
     """The base state for the app."""
 
-    user: Optional[User] = None
+    user: Optional[User] =  {
+    "username": "Jerames",
+    "password": "password",
+    "age": 22,
+    "gender": "male",
+    "weight": "188lbs",
+    "inventory_ingredients": "chicken, broccoli",
+    "health_restrictions": "high LDL cholesterol levels, high sodium levels"
+}
 
     def logout(self):
         """Log out a user."""
