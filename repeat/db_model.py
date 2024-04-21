@@ -9,7 +9,7 @@ class User(rx.Model, table=True):
 
     username: str
     password: str
-    ingredients: List[str] = sqlmodel.Field(
-        default=None,
-        sa_column=sqlalchemy.Column(sqlalchemy.ARRAY(sqlalchemy.String)),
-    )
+    # ingredients: List[str] = sqlmodel.Field(
+    #     default=None,
+    #     sa_column=sqlalchemy.Column(sqlalchemy.ARRAY(sqlalchemy.String)),
+    # )
