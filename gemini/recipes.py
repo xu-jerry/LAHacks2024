@@ -1,6 +1,7 @@
 from gemini.base import model
 import json
 
+
 # Generate a recipe based on the available ingredients
 def generate_recipe(ingredients, number, filter):
     prompt = f"""
@@ -21,12 +22,12 @@ def generate_recipe(ingredients, number, filter):
     {filter}
     """
     response = model.generate_content(prompt)
-    print(response.text)
     recipe = json.loads(response.text)
-    return recipe[0]
+    return recipe
+
 
 # Replace ingredients within the recipe to maintain taste
-#TODO: determine how to change this function
+# TODO: determine how to change this function
 def substitute_recipe(recipe, missing_ingredients, available_ingredients):
     prompt = f"""
     Given a recipe object, substitute the missing ingredients with the available ingredients and return only the updated recipe object.
@@ -46,6 +47,5 @@ def substitute_recipe(recipe, missing_ingredients, available_ingredients):
     If some of the missing ingredients could not be substituted, append a string to the end with the header "Ingredients to Buy".
     """
     response = model.generate_content(prompt)
-    print(response.text)
     new_recipe = json.loads(response.text)
     return new_recipe[0]
